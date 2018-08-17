@@ -1,0 +1,8 @@
+<div xmlns:th="http://www.thymeleaf.org">
+    <th:block th:each="day : ${days}">
+        <span th:if="${#strings.equals(#locale.language,'en')}" th:text="${day.nameEn}"></span>
+        <span th:if="${#strings.equals(#locale.language,'ru')}" th:text="${day.nameRu}"></span>
+        <span th:if="${#strings.equals(#locale.language,'arm')}" th:text="${day.nameArm}"></span>
+        <input  type="text" name="days" th:placeholder="#{working.hours}" class="form-control">
+    </th:block>
+</div>

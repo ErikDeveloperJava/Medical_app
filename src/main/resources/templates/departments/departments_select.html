@@ -1,0 +1,7 @@
+<select name="department" xmlns:th="http://www.thymeleaf.org">
+    <th:block th:each="department : ${departments}">
+        <option th:if="${#strings.equals(#locale.language,'en')}" th:value="${department.id}" th:text="${department.nameEn}"></option>
+        <option th:if="${#strings.equals(#locale.language,'ru')}" th:value="${department.id}" th:text="${department.nameRu}"></option>
+        <option th:if="${#strings.equals(#locale.language,'arm')}" th:value="${department.id}" th:text="${department.nameArm}"></option>
+    </th:block>
+</select>

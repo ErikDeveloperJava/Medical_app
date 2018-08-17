@@ -1,0 +1,13 @@
+<ul class="dropdown-menu dropdown-menu-left" xmlns:th="http://www.thymeleaf.org">
+    <th:block th:each="department : ${departments}">
+        <li th:if="${#strings.equals(#locale.language,'en')}">
+            <a th:href="@{/department/{name} (name=${department.id})}" th:text="${department.nameEn}">name</a>
+        </li>
+        <li th:if="${#strings.equals(#locale.language,'ru')}">
+            <a th:href="@{/department/{name}(name=${department.id})}" th:text="${department.nameRu}">name</a>
+        </li>
+        <li th:if="${#strings.equals(#locale.language,'arm')}">
+            <a th:href="@{/department/{name}(name=${department.id})}" th:text="${department.nameArm}">name</a>
+        </li>
+    </th:block>
+</ul>

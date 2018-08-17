@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta id="frsc" th:content="${_csrf.token}">
+    <meta id="lang" th:content="${#locale.language}">
+
+    <title th:text="#{doctors}">Doctors</title>
+
+    <!-- Bootstrap -->
+    <link th:href="@{/resources/css/bootstrap.min.css}" rel="stylesheet">
+
+    <!-- Google Web Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,regular,600&amp;subset=latin%2Clatin-ext"
+          rel="stylesheet" type="text/css">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+
+    <!-- Date Picker -->
+    <link th:href="@{/resources/css/datepicker.css}" rel="stylesheet" type="text/css"/>
+
+    <!-- Animate CSS -->
+    <link rel="stylesheet" th:href="@{/resources/css/animate.css}">
+
+    <!-- Template CSS Files  -->
+    <link th:href="@{/resources/css/style.css}" rel="stylesheet">
+    <link th:href="@{/resources/css/media.css}" rel="stylesheet">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <!-- Fav and touch icons -->
+
+    <link rel="apple-touch-icon-precomposed" sizes="144x144"
+          href="https://mianfolio.com/kosimedic/v1.3.1/wide/images/fav-144.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114"
+          href="https://mianfolio.com/kosimedic/v1.3.1/wide/images/fav-114.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72"
+          href="https://mianfolio.com/kosimedic/v1.3.1/wide/images/fav-72.png">
+    <link rel="apple-touch-icon-precomposed" href="https://mianfolio.com/kosimedic/v1.3.1/wide/images/fav-57.png">
+    <link rel="shortcut icon" href="https://mianfolio.com/kosimedic/v1.3.1/wide/images/fav.png">
+
+    <script th:src="@{/resources/js/jquery-1.9.1.min.js}"></script>
+</head>
+<body>
+<!-- ***************************************************  Header start  ********************************************************************** -->
+<div class="top-bar hidden-sm hidden-xs">
+    <!-- Container -->
+    <div class="container">
+        <!-- Row -->
+        <div class="row">
+
+            <div class="col-sm-9 col-xs-12">
+                <ul class="list-unstyled list-inline">
+                    <li><p th:text="#{call.us} + ' +(312) 3-33-33'"><i class="fa fa-phone"></i> Call us +44 558 558 558</p></li>
+                </ul>
+            </div>
+
+            <div class="col-sm-3 col-xs-12">
+                <div class="pull-right">
+                    <div class="dropdown">
+                        <span><span th:text="#{language}">Language</span>: <i class="fa fa-globe"></i></span>
+                        <span th:if="${#strings.equals(#locale.language,'en')}" class="dropdown-toggle"
+                              id="dropdownLang"
+                              data-toggle="dropdown"
+                              aria-haspopup="true"
+                              aria-expanded="true">
+                            <span th:text="#{english}">English</span>
+                            <span class=caret></span>
+                        </span>
+                        <span th:if="${#strings.equals(#locale.language,'ru')}" class="dropdown-toggle"
+                              id="dropdownLang"
+                              data-toggle="dropdown"
+                              aria-haspopup="true"
+                              aria-expanded="true">
+                            <span th:text="#{russian}">Russian</span>
+                            <span class=caret></span>
+                        </span>
+                        <span th:if="${#strings.equals(#locale.language,'arm')}" class="dropdown-toggle"
+                              id="dropdownLang"
+                              data-toggle="dropdown"
+                              aria-haspopup="true"
+                              aria-expanded="true">
+                            <span th:text="#{armenian}">Armenian</span>
+                            <span class=caret></span>
+                        </span>
+
+                        <ul class="dropdown-menu" aria-labelledby="dropdownLang">
+                            <li th:unless="${#strings.equals(#locale.language,'en')}">
+                                <a th:href="@{${#request.getRequestURI()}(lang='en')}" th:text="#{english}"></a>
+                            </li>
+                            <li th:unless="${#strings.equals(#locale.language,'ru')}">
+                                <a th:href="@{${#request.getRequestURI()}(lang='ru')}" th:text="#{russian}"></a>
+                            </li>
+                            <li th:unless="${#strings.equals(#locale.language,'arm')}">
+                                <a th:href="@{${#request.getRequestURI()}(lang='arm')}" th:text="#{armenian}"></a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+        </div> <!-- ./end Row -->
+    </div> <!-- ./end Container -->
+</div>
+<!-- End / Top Bar -->
+
+
+<!-- Nav -->
+<nav class="navbar navbar-default" role="navigation" th:unless="${#strings.equals(user.role,'ADMIN')}">
+    <div class="container">
+        <!-- LOGO -->
+        <a class="navbar-brand page-scroll" href="/">
+            <span th:text="#{medical.1}"></span>
+            <i class="fa fa-heartbeat" aria-hidden="true"></i>
+            <span class="text-blue text-light" th:text="#{medical.2}"> medical 2 </span>
+        </a>
+        <!-- END / LOGO -->
+
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <!-- Hidden li included to remove active class from about link when scrolled up past about section -->
+                <li class="hidden">
+                    <a class="page-scroll" href="/"></a>
+                </li>
+
+                <li>
+                    <a href="/" th:text="#{home}">Home</a>
+                </li>
+
+                <!--doctor header-->
+                <li th:if="${#strings.equals(user.role,'DOCTOR')}" class="dropdown">
+                    <a style="cursor: pointer;" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                       aria-haspopup="true" aria-expanded="false" th:text="#{my.news}">my news</a>
+                    <ul class="dropdown-menu dropdown-menu-left">
+                        <li><a th:href="@{/doctor/users/new}" id="new_registered" th:text="#{new.registered.users}">New registered users</a></li>
+                        <li><a th:href="@{/doctor/users/accepted}" id="accepted_registered" th:text="#{registered.users}">registered users</a></li>
+                        <li><a th:href="@{/doctor/users/unconfirmed}" id="unconfirmed_registered" th:text="#{unconfirmed.registered.users}">unconfirmed registered users</a></li>
+                        <li><a th:href="@{/doctor/posts}" th:text="#{my.post}">my posts</a></li>
+                        <li><a th:href="@{/doctor/{id}(id = ${user.id})}" th:text="#{my.data}">my data</a></li>
+                    </ul>
+                </li>
+
+                <!--Add post-->
+                <li th:if="${#strings.equals(user.role,'DOCTOR')}">
+                    <a th:href="@{/post/add}" th:text="#{add.post}">Add post</a>
+                </li>
+
+
+                <!--user header-->
+                <li th:if="${#strings.equals(user.role,'USER')}" class="dropdown">
+                    <a style="cursor: pointer;" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                       aria-haspopup="true" aria-expanded="false" th:text="#{my.news}">my news</a>
+                    <ul class="dropdown-menu dropdown-menu-left">
+                        <li><a th:href="@{/user/request/new}" id="new_request" th:text="#{my.requests}">My new requsts</a></li>
+                        <li><a th:href="@{/user/request/accepted}" id="accepted_request" th:text="#{my.accepted.requests}">My accepted requests</a></li>
+                    </ul>
+                </li>
+
+                <!--departments-->
+                <li class="dropdown" id="dp_">
+                    <a style="cursor: pointer;" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                       aria-haspopup="true" aria-expanded="false" th:text="#{departments}">Departments</a>
+                </li>
+
+                <!--Doctors-->
+                <li>
+                    <a th:href="@{/doctors}" th:text="#{doctors}"></a>
+                </li>
+
+                <!--Posts-->
+                <li>
+                    <a th:href="@{/posts}" th:text="#{posts}">Posts</a>
+                </li>
+
+                <!--Login/Register -->
+                <li th:if="${#strings.equals(user.role,'ROLE_ANONYMOUS')}" class="dropdown">
+                    <a style="cursor: pointer" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                       aria-haspopup="true" aria-expanded="false"th:text="#{login.register}">Login/Register</a>
+                    <ul class="dropdown-menu dropdown-menu-left">
+                        <li><a th:href="@{/login}" th:text="#{login}">Login</a></li>
+                        <li><a th:href="@{/register}" th:text="#{register}">Register</a></li>
+                    </ul>
+                </li>
+
+                <!--Logout-->
+                <li th:unless="${#strings.equals(user.role,'ROLE_ANONYMOUS')}">
+                    <form style="position: relative;top: 10px" th:action="@{/logout}" method="post">
+                        <button style="background: none;border: none" type="submit" th:text="#{logout}">Logout</button>
+                    </form>
+                </li>
+            </ul> <!-- END / NAVBAR RIGHT -->
+        </div>
+    </div> <!-- END CONTAINER -->
+</nav>
+
+<nav class="navbar navbar-default" role="navigation" th:if="${#strings.equals(user.role,'ADMIN')}">
+    <div class="container">
+        <!-- LOGO -->
+        <a class="navbar-brand page-scroll" href="/">
+            <span th:text="#{medical.1}"></span>
+            <i class="fa fa-heartbeat" aria-hidden="true"></i>
+            <span class="text-blue text-light" th:text="#{medical.2}"> medical 2 </span>
+        </a>
+        <!-- END / LOGO -->
+
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <!-- Hidden li included to remove active class from about link when scrolled up past about section -->
+                <li class="hidden">
+                    <a class="page-scroll" href="/"></a>
+                </li>
+
+                <li>
+                    <a href="/admin" th:text="#{home}">Home</a>
+                </li>
+
+                <!--Doctors-->
+                <li>
+                    <a th:href="@{/admin/doctors}" th:text="#{doctors}"></a>
+                </li>
+                <!--Users-->
+                <li>
+                    <a th:href="@{/admin}" th:text="#{users}"></a>
+                </li>
+
+                <!--Posts-->
+                <li>
+                    <a th:href="@{/admin/doctor/add}" th:text="#{add.doctor}">Posts</a>
+                </li>
+
+                <!--Doctors-->
+                <li>
+                    <form style="position: relative;top: 10px" th:action="@{/logout}" method="post">
+                        <button style="background: none;border: none" type="submit" th:text="#{logout}">Logout</button>
+                    </form>
+                </li>
+            </ul> <!-- END / NAVBAR RIGHT -->
+        </div>
+    </div> <!-- END CONTAINER -->
+</nav>
+<!-- ./end Nav -->
+<!-- ***************************************************  Header end  ********************************************************************** -->
+
+<section class="gardient-bg-small">
+    <div class="container">
+        <h1 class="pull-left" th:if="${#strings.equals(#request.getRequestURI(),'/doctors')} or ${#strings.equals(#request.getRequestURI(),'/admin/doctors')}" th:text="#{doctors}">doctors</h1>
+        <th:block th:unless="${#strings.equals(#request.getRequestURI(),'/doctors')} or ${#strings.equals(#request.getRequestURI(),'/admin/doctors')}">
+            <h1 th:if="${#strings.equals(#locale.language,'en')}" class="pull-left"  th:text="#{doctors} + '-' + ${department.nameEn}">Tabs</h1>
+        </th:block>
+        <th:block th:unless="${#strings.equals(#request.getRequestURI(),'/doctors')}  or ${#strings.equals(#request.getRequestURI(),'/admin/doctors')}">
+            <h1 th:if="${#strings.equals(#locale.language,'ru')}" class="pull-left"  th:text="#{doctors} + '-' + ${department.nameRu}">Tabs</h1>
+        </th:block>
+        <th:block th:unless="${#strings.equals(#request.getRequestURI(),'/doctors')}  or ${#strings.equals(#request.getRequestURI(),'/admin/doctors')}">
+            <h1 th:if="${#strings.equals(#locale.language,'arm')}" class="pull-left"  th:text="#{doctors} + '-' + ${department.nameArm}">Tabs</h1>
+        </th:block>
+        <div class="pull-right">
+            <ol class="breadcrumb">
+                <li><a href="/" th:text="#{home}">Home</a></li>
+                <li class="active" th:if="${#strings.equals(#request.getRequestURI(),'/doctors')} or ${#strings.equals(#request.getRequestURI(),'/admin/doctors')}" th:text="#{doctors}">Doctors</li>
+                <th:block th:unless="${#strings.equals(#request.getRequestURI(),'/doctors')}  or ${#strings.equals(#request.getRequestURI(),'/admin/doctors')}">
+                    <li class="active" th:if="${#strings.equals(#locale.language,'arm')}" th:text="#{doctors} + '-' + ${department.nameArm}">Doctors</li>
+                </th:block>
+                <th:block th:unless="${#strings.equals(#request.getRequestURI(),'/doctors')}  or ${#strings.equals(#request.getRequestURI(),'/admin/doctors')}">
+                    <li class="active" th:if="${#strings.equals(#locale.language,'en')}" th:text="#{doctors} + '-' + ${department.nameEn}">Doctors</li>
+                </th:block>
+                <th:block th:unless="${#strings.equals(#request.getRequestURI(),'/doctors')}  or ${#strings.equals(#request.getRequestURI(),'/admin/doctors')}">
+                    <li class="active" th:if="${#strings.equals(#locale.language,'ru')}" th:text="#{doctors} + '-' + ${department.nameRu}">Doctors</li>
+                </th:block>
+            </ol>
+        </div>
+    </div>
+</section>
+
+<section class="default-bg">
+    <div class="container">
+
+        <!-- Tab panes -->
+        <div class="tab-content">
+            <th:block th:each="doctor : ${doctors}" th:if="${user.id} ne ${doctor.id}">
+                <div role="tabpanel" class="tab-pane fade in active" id="home-tab">
+                    <div class="content">
+                        <p th:text="${#strings.substring(doctor.doctor.information,0,(#strings.length(doctor.doctor.information)/1.5))}"></p>
+                        <form th:if="${#strings.equals(user.role,'ADMIN')}" th:action="@{/admin/user/delete}" method="post">
+                            <input type="hidden" name="userId" th:value="${doctor.id}">
+                            <input id="contactFormBtn" type="submit" class="btn blue medium" th:value="#{delete}">
+                        </form>
+                        <a th:unless="${#strings.equals(user.role,'ADMIN')}"
+                           th:href="@{/doctor/{id}(id = ${doctor.id})}"
+                           class="btn border small" th:text="#{read.more}">Read More</a>
+                    </div>
+
+                    <div class="image">
+                        <img th:src="@{/resources/images/{img}(img = ${doctor.imgUrl})}" alt="">
+                        <p class="name" th:text="${doctor.name} + ' ' + ${doctor.surname}">Name surname</p>
+                        <p th:if="${#strings.equals(#locale.language,'ru')}" class="spec" th:text="${doctor.doctor.department.nameEn}">Deparmtment</p>
+                        <p th:if="${#strings.equals(#locale.language,'en')}" class="spec" th:text="${doctor.doctor.department.nameRu}">Deparmtment</p>
+                        <p th:if="${#strings.equals(#locale.language,'arm')}" class="spec" th:text="${doctor.doctor.department.nameArm}">Deparmtment</p>
+                    </div>
+
+                    <span class="clearfix"></span>
+                </div>
+            </th:block>
+            <div class="blog-pagination">
+                <ul class="pagination">
+                    <th:block th:each="i : ${#numbers.sequence(0,length-1)}">
+                        <li th:if="${i} eq ${page}">
+                            <a style="cursor: pointer" class="active" th:text="${i + 1}">
+                            </a>
+                        </li>
+                        <li th:if="${i} ne ${page}">
+                            <a th:href="@{${#request.getRequestURI()}(page=${i+1})}" th:text="${i + 1}">
+                            </a>
+                        </li>
+                    </th:block>
+                    <li th:if="${page} ne ${length - 1}">
+                        <a th:href="@{${#request.getRequestURI()}(page=${page + 2})}"><i class="fa fa-long-arrow-right"></i></a>
+                    </li>
+                    <li th:if="${page} eq ${length - 1}">
+                        <a style="cursor: pointer"><i class="fa fa-long-arrow-right"></i></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- **************************************** Footer ******************************************************************* -->
+<footer>
+    <!-- Container -->
+    <div class="container">
+        <!-- Row Begin -->
+        <div class="row">
+
+            <div class="col-md-3">
+                <div class="widget">
+                    <a  class="navbar-brand page-scroll" href="/">
+                        <span th:text="#{medical.1}"></span>
+                        <i class="fa fa-heartbeat" aria-hidden="true"></i>
+                        <span class="text-blue text-light" th:text="#{medical.2}"> medical 2 </span>
+                    </a>
+                    <p style="position: relative;left: 12px;" th:text="#{footer.text}"></p>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="widget">
+                    <h3><span th:text="#{social}">Social</span><span class="bottom-lin"></span></h3>
+                    <ul>
+                        <li>
+                            <a href="http://www.facebook.com">Facebook</a>
+                        </li>
+                        <li>
+                            <a href="http://www.twitter.com">Twitter</a>
+                        </li>
+                        <li>
+                            <a href="http://www.youtube.com">Youtube</a>
+                        </li>
+                        <li>
+                            <a href="http://www.vk.com">Vk</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="widget">
+                    <h3>Contact</h3>
+                    <ul>
+                        <li th:text="#{our.address} + ': Gyumri sayat-nova 21/12'">Our address</li>
+                        <li th:text="#{phone} + ': +(312) 3-33-33'">Phone</li>
+                        <li th:text="#{email} + ':  MedicalGyumri@mail.com'">Email</li>
+                        <li th:text="#{working.hours} + ': 09:00 - 19:00'">Working hours</li>
+                    </ul>
+                </div>
+            </div>
+        </div> <!-- ./end Row -->
+    </div> <!-- ./end Container -->
+    <!-- Footer Copyright -->
+    <div class="footer-slogan">
+        &copy; 2016 Medical
+    </div>
+    <!-- ./end Footer Copyright -->
+</footer>
+<!-- **************************************** Footer -end ******************************************************************* -->
+
+<noscript th:text="#{none.script.msg}"></noscript>
+
+<!-- Script Files -->
+<script th:src="@{/resources/js/bootstrap.js}"></script>
+<script th:src="@{/resources/js/main.js}"></script>
+<script th:src="@{/resources/js/jquery.easing.min.js}"></script>
+<script th:src="@{/resources/js/bootstrap-datepicker.js}"></script>
+<script th:src="@{/resources/js/jquery.appear.js}"></script>
+<script th:src="@{/resources/js/jquery.countTo.js}"></script>
+<script th:if="${#strings.equals(user.role,'DOCTOR')}" th:src="@{/resources/js/medical/doctor.js}"></script>
+<script th:if="${#strings.equals(user.role,'USER')}" th:src="@{/resources/js/medical/user.js}"></script>
+<script th:unless="${#strings.equals(user.role,'ADMIN')}" th:src="@{/resources/js/medical/generic.js}"></script>
+</body>
+</html>

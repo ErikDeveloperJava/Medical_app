@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta id="frsc" th:content="${_csrf.token}">
+    <meta id="nameError" th:content="#{name.error}">
+    <meta id="surnameError" th:content="#{surname.error}">
+    <meta id="usernameError" th:content="#{username.error}">
+    <meta id="passwordError" th:content="#{password.error}">
+    <meta id="repeatPasswordError" th:content="#{repeat.password.error}">
+    <meta id="imageError" th:content="#{image.error}">
+    <meta id="passwordsNotMatch" th:content="#{passwords.not.match}">
+    <meta id="informationError" th:content="#{information.error}">
+    <title th:text="#{add.doctor}"></title>
+
+    <!-- Bootstrap -->
+    <link th:href="@{/resources/css/bootstrap.min.css}" rel="stylesheet">
+
+    <!-- Google Web Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,regular,600&amp;subset=latin%2Clatin-ext"
+          rel="stylesheet" type="text/css">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+
+    <!-- Date Picker -->
+    <link th:href="@{/resources/css/datepicker.css}" rel="stylesheet" type="text/css"/>
+
+    <!-- Animate CSS -->
+    <link rel="stylesheet" th:href="@{/resources/css/animate.css}">
+
+    <!-- Template CSS Files  -->
+    <link th:href="@{/resources/css/style.css}" rel="stylesheet">
+    <link th:href="@{/resources/css/media.css}" rel="stylesheet">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <!-- Fav and touch icons -->
+
+    <link rel="apple-touch-icon-precomposed" sizes="144x144"
+          href="https://mianfolio.com/kosimedic/v1.3.1/wide/images/fav-144.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114"
+          href="https://mianfolio.com/kosimedic/v1.3.1/wide/images/fav-114.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72"
+          href="https://mianfolio.com/kosimedic/v1.3.1/wide/images/fav-72.png">
+    <link rel="apple-touch-icon-precomposed" href="https://mianfolio.com/kosimedic/v1.3.1/wide/images/fav-57.png">
+    <link rel="shortcut icon" href="https://mianfolio.com/kosimedic/v1.3.1/wide/images/fav.png">
+
+    <script th:src="@{/resources/js/jquery-1.9.1.min.js}"></script>
+</head>
+<body>
+
+<!-- ***************************************************  Header start  ********************************************************************** -->
+<div class="top-bar hidden-sm hidden-xs">
+    <!-- Container -->
+    <div class="container">
+        <!-- Row -->
+        <div class="row">
+
+            <div class="col-sm-9 col-xs-12">
+                <ul class="list-unstyled list-inline">
+                    <li><p th:text="#{call.us} + ' +(312) 3-33-33'"><i class="fa fa-phone"></i> Call us +44 558 558 558
+                    </p></li>
+                </ul>
+            </div>
+
+            <div class="col-sm-3 col-xs-12">
+                <div class="pull-right">
+                    <div class="dropdown">
+                        <span><span th:text="#{language}">Language</span>: <i class="fa fa-globe"></i></span>
+                        <span th:if="${#strings.equals(#locale.language,'en')}" class="dropdown-toggle"
+                              id="dropdownLang"
+                              data-toggle="dropdown"
+                              aria-haspopup="true"
+                              aria-expanded="true">
+                            <span th:text="#{english}">English</span>
+                            <span class=caret></span>
+                        </span>
+                        <span th:if="${#strings.equals(#locale.language,'ru')}" class="dropdown-toggle"
+                              id="dropdownLang"
+                              data-toggle="dropdown"
+                              aria-haspopup="true"
+                              aria-expanded="true">
+                            <span th:text="#{russian}">Russian</span>
+                            <span class=caret></span>
+                        </span>
+                        <span th:if="${#strings.equals(#locale.language,'arm')}" class="dropdown-toggle"
+                              id="dropdownLang"
+                              data-toggle="dropdown"
+                              aria-haspopup="true"
+                              aria-expanded="true">
+                            <span th:text="#{armenian}">Armenian</span>
+                            <span class=caret></span>
+                        </span>
+
+                        <ul class="dropdown-menu" aria-labelledby="dropdownLang">
+                            <li th:unless="${#strings.equals(#locale.language,'en')}">
+                                <a th:href="@{${#request.getRequestURI()}(lang='en')}" th:text="#{english}"></a>
+                            </li>
+                            <li th:unless="${#strings.equals(#locale.language,'ru')}">
+                                <a th:href="@{${#request.getRequestURI()}(lang='ru')}" th:text="#{russian}"></a>
+                            </li>
+                            <li th:unless="${#strings.equals(#locale.language,'arm')}">
+                                <a th:href="@{${#request.getRequestURI()}(lang='arm')}" th:text="#{armenian}"></a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+        </div> <!-- ./end Row -->
+    </div> <!-- ./end Container -->
+</div>
+<!-- End / Top Bar -->
+
+
+<!-- Nav -->
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container">
+        <!-- LOGO -->
+        <a class="navbar-brand page-scroll" href="/">
+            <span th:text="#{medical.1}"></span>
+            <i class="fa fa-heartbeat" aria-hidden="true"></i>
+            <span class="text-blue text-light" th:text="#{medical.2}"> medical 2 </span>
+        </a>
+        <!-- END / LOGO -->
+
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <!-- Hidden li included to remove active class from about link when scrolled up past about section -->
+                <li class="hidden">
+                    <a class="page-scroll" href="/"></a>
+                </li>
+
+                <li>
+                    <a href="/admin" th:text="#{home}">Home</a>
+                </li>
+
+                <!--Doctors-->
+                <li>
+                    <a th:href="@{/admin/doctors}" th:text="#{doctors}"></a>
+                </li>
+                <!--Users-->
+                <li>
+                    <a th:href="@{/admin}" th:text="#{users}"></a>
+                </li>
+
+                <!--Posts-->
+                <li>
+                    <a th:href="@{/admin/doctor/add}" th:text="#{add.doctor}">Posts</a>
+                </li>
+
+                <!--Doctors-->
+                <li>
+                    <form style="position: relative;top: 10px" th:action="@{/logout}" method="post">
+                        <button style="background: none;border: none" type="submit" th:text="#{logout}">Logout</button>
+                    </form>
+                </li>
+            </ul> <!-- END / NAVBAR RIGHT -->
+        </div>
+    </div> <!-- END CONTAINER -->
+</nav>
+<!-- ***************************************************  Header end  ********************************************************************** -->
+
+<section class="gardient-bg-small">
+    <div class="container">
+        <h1 class="pull-left" th:text="#{add.doctor}">Add doctor</h1>
+        <div class="pull-right">
+            <ol class="breadcrumb">
+                <li><a href="/" th:text="#{home}">Home</a></li>
+                <li class="active" th:text="#{add.doctor}">Add doctor</li>
+            </ol>
+        </div>
+    </div>
+</section>
+<section id="contact-us" class="default-bg">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="section-title mb20">
+                    <p class="text-blue animated" data-animation="bounceInLeft"></p>
+                    <h2 class="animated" data-animation="bounceInLeft" th:text="#{add.doctor}">Login</h2>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <form th:action="@{/admin/doctor/add}" id="contact" method="post" th:object="${form}"
+                      enctype="multipart/form-data">
+
+                    <span id="nameError_" style="color: red" th:if="${#fields.hasErrors('name')}"
+                          th:text="#{name.error}"></span>
+                    <span id="nameError_" style="color: red" th:unless="${#fields.hasErrors('name')}"></span>
+                    <input id="name" type="text" th:field="*{name}" class="form-control" th:placeholder="#{name}">
+
+                    <span id="surnameError_" style="color: red" th:if="${#fields.hasErrors('surname')}"
+                          th:text="#{surname.error}"></span>
+                    <span id="surnameError_" style="color: red" th:unless="${#fields.hasErrors('surname')}"></span>
+                    <input id="surname" type="text" th:field="*{surname}" class="form-control"
+                           th:placeholder="#{surname}">
+
+                    <span id="usernameError_" style="color: red" th:if="${#fields.hasErrors('usernameExists')}"
+                          th:text="#{username.exists.error}"></span>
+                    <span id="usernameError_" style="color: red" th:if="${#fields.hasErrors('username')}"
+                          th:text="#{username.error}"></span>
+                    <span id="usernameError_" style="color: red"
+                          th:unless="${#fields.hasErrors('username')} and ${#fields.hasErrors('usernameExists')}"></span>
+                    <input id="username" type="text" th:field="*{username}" class="form-control"
+                           th:placeholder="#{username}">
+
+                    <span id="passwordError_" style="color: red" th:if="${#fields.hasErrors('passwordsNotMatch')}"
+                          th:text="#{passwords.not.match}"></span>
+                    <span id="passwordError_" style="color: red" th:if="${#fields.hasErrors('password')}"
+                          th:text="#{password.error}"></span>
+                    <span id="passwordError_" style="color: red"
+                          th:unless="${#fields.hasErrors('password')} and ${#fields.hasErrors('passwordsNotMatch')}"></span>
+                    <input id="password" type="password" th:field="*{password}" class="form-control"
+                           th:placeholder="#{password}">
+
+                    <span id="repeatPasswordError_" style="color: red" th:if="${#fields.hasErrors('passwordsNotMatch')}"
+                          th:text="#{repeat.password.error}"></span>
+                    <span id="repeatPasswordError_" style="color: red" th:if="${#fields.hasErrors('passwordsNotMatch')}"
+                          th:text="#{passwords.not.match}"></span>
+                    <span id="repeatPasswordError_" style="color: red"
+                          th:unless="${#fields.hasErrors('repeatPassword')} and ${#fields.hasErrors('repeatPassword')}"></span>
+                    <input id="repeat_password" type="password" th:field="*{repeatPassword}" class="form-control"
+                           th:placeholder="#{repeat.password}">
+
+
+                    <span id="informationError_" style="color: red" th:if="${#fields.hasErrors('information')}" th:text="#{information.error}"></span>
+                    <span id="informationError_" style="color: red" th:unless="${#fields.hasErrors('information')}" ></span>
+                    <textarea id="information" th:placeholder="#{write.obout.yourself}" th:field="*{information}" class="form-control"></textarea>
+
+                    <div id="dep"></div>
+                    <script>
+                        $(document).ready(function () {
+                            var token = $("#frsc").attr("content");
+                            $.ajax({
+                                type: "POST",
+                                url: "/admin/departments/select",
+                                data: {_csrf: token},
+                                success: function (data) {
+                                    $("#dep").html(data)
+                                },
+                                error: function () {
+                                    window.location = "/error"
+                                }
+                            })
+                        })
+                    </script>
+                    <div id="days"></div>
+                    <script>
+                        $(document).ready(function () {
+                            var token = $("#frsc").attr("content");
+                            $.ajax({
+                                type: "POST",
+                                url: "/admin/days",
+                                data: {_csrf: token},
+                                success: function (data) {
+                                    $("#days").html(data)
+                                },
+                                error: function () {
+                                    window.location = "/error"
+                                }
+                            })
+                        })
+                    </script>
+
+                    <span id="imageError_" style="color: red" th:if="${#fields.hasErrors('imageFormatError')}"
+                          th:text="#{image.format.error}"></span>
+                    <span id="imageError_" style="color: red" th:if="${#fields.hasErrors('image')}"
+                          th:text="#{image.error}"></span>
+                    <span id="imageError_" style="color: red"
+                          th:unless="${#fields.hasErrors('image')} and ${#fields.hasErrors('imageFormatError')}"></span>
+                    <br/>
+                    <input type="file" th:field="*{image}" id="file" class="inputfile"/>
+                    <label style="cursor: pointer" for="file" th:text="#{choose.photo}">Choose a photo</label><br/>
+
+                    <input id="contactFormBtn" type="submit" class="btn blue medium" th:value="#{add.doctor}">
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Footer -->
+<footer>
+    <!-- Container -->
+    <div class="container">
+        <!-- Row Begin -->
+        <div class="row">
+
+            <div class="col-md-3">
+                <div class="widget">
+                    <a class="navbar-brand page-scroll" href="/">
+                        <span th:text="#{medical.1}"></span>
+                        <i class="fa fa-heartbeat" aria-hidden="true"></i>
+                        <span class="text-blue text-light" th:text="#{medical.2}"> medical 2 </span>
+                    </a>
+                    <p th:text="#{footer.text}"></p>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="widget">
+                    <h3><span th:text="#{social}">Social</span><span class="bottom-lin"></span></h3>
+                    <ul>
+                        <li>
+                            <a href="http://www.facebook.com">Facebook</a>
+                        </li>
+                        <li>
+                            <a href="http://www.twitter.com">Twitter</a>
+                        </li>
+                        <li>
+                            <a href="http://www.youtube.com">Youtube</a>
+                        </li>
+                        <li>
+                            <a href="http://www.vk.com">Vk</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="widget">
+                    <h3>Contact</h3>
+                    <ul>
+                        <li th:text="#{our.address} + ': Gyumri sayat-nova 21/12'">Our address</li>
+                        <li th:text="#{phone} + ': +(312) 3-33-33'">Phone</li>
+                        <li th:text="#{email} + ':  MedicalGyumri@mail.com'">Email</li>
+                        <li th:text="#{working.hours} + ': 09:00 - 19:00'">Working hours</li>
+                    </ul>
+                </div>
+            </div>
+        </div> <!-- ./end Row -->
+    </div> <!-- ./end Container -->
+    <!-- Footer Copyright -->
+    <div class="footer-slogan">
+        &copy; 2016 Medical
+    </div>
+    <!-- ./end Footer Copyright -->
+</footer>
+<!-- ./end Scroll to top -->
+<noscript th:text="#{none.script.msg}"></noscript>
+<!-- Script Files -->
+<script th:src="@{/resources/js/bootstrap.js}"></script>
+<script th:src="@{/resources/js/main.js}"></script>
+<script th:src="@{/resources/js/jquery.easing.min.js}"></script>
+<script th:src="@{/resources/js/bootstrap-datepicker.js}"></script>
+<script th:src="@{/resources/js/jquery.appear.js}"></script>
+<script th:src="@{/resources/js/jquery.countTo.js}"></script>
+<script th:src="@{/resources/js/medical/generic.js}"></script>
+<script th:src="@{/resources/js/medical/register.js}"></script>
+</body>
+</html>
