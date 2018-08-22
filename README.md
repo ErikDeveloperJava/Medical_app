@@ -1,1 +1,1 @@
-Project on Spring Boot
+Medical app on Spring Boot
